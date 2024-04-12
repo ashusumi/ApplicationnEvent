@@ -14,9 +14,9 @@ public class AuditEvent<T> extends ApplicationEvent {
 
 	private T data;
 
-	public AuditEvent(T event) {
-		super(event);
-
+	public AuditEvent(T data) {
+		super(data);
+		this.data = data; // Ensure the data is assigned to the field
 	}
 
 }

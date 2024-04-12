@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,14 +37,13 @@ public class UserController {
 	}
 
 	@PostMapping
-	public String addUsers(@RequestBody Users user) {
-		try {
-			users.add(Users.builder().id(user.getId()).name(user.getName()).email(user.getEmail()).build());
-			System.out.println(users);
-			publisher.publishEvent("Users added successfully" + user.getName());
-			return "users added";
-		} catch (Exception e) {
-			return e.getMessage();
+	public ResponseEntity<Users> addUsers(@RequestBody Users user) {
+		if (user.getEmail() == null || !user.getEmail().contains("@")) {
+			return ResponseEntity.badRequest().build(); // Basic email validation
 		}
+		users.add(Users.builder().id(user.getId()).name(user.getName()).email(user.getEmail()).build());
+		publisher.publishEvent("User added successfully: " + user.getName());
+		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
+
 }
