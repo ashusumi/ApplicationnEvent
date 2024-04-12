@@ -6,17 +6,13 @@ import lombok.Getter;
 
 @Getter
 public class AuditEvent<T> extends ApplicationEvent {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private T data;
 
 	public AuditEvent(T data) {
 		super(data);
-		this.data = data; // Ensure the data is assigned to the field
+		this.data = data; 
 	}
 
 }
